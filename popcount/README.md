@@ -42,7 +42,7 @@ fmt.Println(count)
 
 通过科学归纳法得出通过 `n &= n - 1` 可以消除 n 末位的 1。即，消除了几个 1 就得到了总的二进制位 1 的个数。图解如下：  
 
-![sparse](sparse/sparse.png "sparse")
+![sparse](sparse/img/sparse.png "sparse")
 
 示例代码如下：
 ```
@@ -79,6 +79,30 @@ fmt.Println(count)
 ```
 
 相比于 1.0 版查表，这里最重要的改变是，通过切片而不是 map 构造表。切片隐含的一层意思是值对应二进制位个数。如整数 15 通过 lookup[15] 即可从切片中查到其二进制位 1 个数是 4。
+
+## 性能测试
+测试三种 popcount 算法，性能如下:
+```
+# go test -bench=. -v -benchmem -benchtime=5s -count=3 .
+goos: linux
+goarch: amd64
+pkg: popcount/test
+cpu: Intel(R) Xeon(R) Gold 6130 CPU @ 2.10GHz
+BenchmarkIterated
+BenchmarkIterated-3     195811508               36.39 ns/op            0 B/op          0 allocs/op
+BenchmarkIterated-3     180319236               31.16 ns/op            0 B/op          0 allocs/op
+BenchmarkIterated-3     171637110               33.30 ns/op            0 B/op          0 allocs/op
+BenchmarkSparse
+BenchmarkSparse-3       271943863               22.12 ns/op            0 B/op          0 allocs/op
+BenchmarkSparse-3       268430272               23.56 ns/op            0 B/op          0 allocs/op
+BenchmarkSparse-3       244256011               22.03 ns/op            0 B/op          0 allocs/op
+BenchmarkLookup
+BenchmarkLookup-3       504271546               11.19 ns/op            0 B/op          0 allocs/op
+BenchmarkLookup-3       554806210               10.33 ns/op            0 B/op          0 allocs/op
+BenchmarkLookup-3       711143409               12.16 ns/op            0 B/op          0 allocs/op
+PASS
+ok      popcount/test   76.752s
+```
 
 ## 结尾
 当然 popcount 并不只有这几种，且 Go 中常用的是 [hacker popcount](https://zhuanlan.zhihu.com/p/341488123)。go 中锁的代码包含大量的二进制位操作，理解 popcount 也能对后续理解锁有一点帮助。  

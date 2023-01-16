@@ -1,12 +1,17 @@
-package main
+package iterated
 
-import "fmt"
+//var n uint64 = 15
 
-var n uint64 = 15
+func Iterated(n uint64, count uint64) {
+	for ; n != 0; n = n >> 1 {
+		count += (n & 1)
+	}
+}
 
+/*
 func main() {
 	// v1.0
-	/*
+
 		count := 0
 
 		for {
@@ -21,14 +26,10 @@ func main() {
 		}
 
 		fmt.Println(count)
-	*/
+
 
 	// v1.1
 	var count uint64
-
-	for ; n != 0; n = n >> 1 {
-		count += (n & 1)
-	}
-
-	fmt.Println(count)
+	iterated(15, count)
 }
+*/
