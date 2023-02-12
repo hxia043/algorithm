@@ -2,16 +2,52 @@ package main
 
 import "fmt"
 
-func main() {
-	var A = [6]int{10, 4, 5, 0, 2, 1}
+const n int = 6
 
-	for i := 0; i < len(A)-1; i++ {
-		for j := 0; j < len(A)-1-i; j++ {
-			if A[j] > A[j+1] {
-				A[j], A[j+1] = A[j+1], A[j]
+var isBubbled bool
+
+func bubbleWithoutFlag(data [n]int) [n]int {
+	for i := 0; i < len(data)-1; i++ {
+		for j := 0; j < len(data)-1-i; j++ {
+			if data[j] > data[j+1] {
+				data[j], data[j+1] = data[j+1], data[j]
 			}
+		}
+
+		fmt.Println(data)
+	}
+
+	return data
+}
+
+func bubbleWithFlag(data [n]int) [n]int {
+	for i := 0; i < len(data)-1; i++ {
+
+		isBubbled = false
+
+		for j := 0; j < len(data)-1-i; j++ {
+			if data[j] > data[j+1] {
+				data[j], data[j+1] = data[j+1], data[j]
+				isBubbled = true
+			}
+		}
+
+		fmt.Println(data)
+
+		if !isBubbled {
+			break
 		}
 	}
 
-	fmt.Println(A)
+	return data
+}
+
+func main() {
+	var A = [6]int{3, 5, 4, 1, 2, 6}
+
+	bubbleWithoutFlag(A)
+
+	fmt.Println("=====================")
+
+	bubbleWithFlag(A)
 }
