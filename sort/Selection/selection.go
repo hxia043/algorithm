@@ -2,24 +2,29 @@ package main
 
 import "fmt"
 
-func main() {
-	var A = [6]int{4, 5, 6, 3, 1, 2}
+const n int = 6
 
-	for i := 0; i < len(A)-1; i++ {
-		min := A[i]
+func selectionSort(data [n]int) {
+	for i := 0; i < len(data)-1; i++ {
+		min := data[i]
 		j := i + 1
 		selected := j
 
-		for ; j < len(A); j++ {
-			if min > A[j] {
-				min = A[j]
+		for ; j < len(data); j++ {
+			if min > data[j] {
+				min = data[j]
 				selected = j
 			}
 		}
 
-		A[selected] = A[i]
-		A[i] = min
+		data[selected] = data[i]
+		data[i] = min
 	}
 
-	fmt.Println(A)
+	fmt.Println(data)
+}
+
+func main() {
+	var A = [6]int{4, 5, 6, 3, 1, 2}
+	selectionSort(A)
 }
