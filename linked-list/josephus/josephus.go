@@ -55,16 +55,66 @@ func (header *People) Josephus(k int) (int, error) {
 	return people.Id, nil
 }
 
+func (header *People) Length() int {
+	length := 1
+	for people := header; people.Next != header; people = people.Next {
+		length++
+	}
+
+	return length
+}
+
+func (header *People) Index(k int) int {
+	index, length := 0, header.Length()
+	if index = k % length; index == 0 {
+		index = length
+	}
+
+	return index
+}
+
+func (header *People) Josephus2(k int) (int, error) {
+	if k <= 1 {
+		return 0, fmt.Errorf("unexpect k: %d defined, k should more than 1", k)
+	}
+
+	count, people := 1, header
+	index := people.Index(k)
+	for people.Next != header {
+		count++
+		if count == index {
+			people.Next = people.Next.Next
+			people = people.Next
+			header = people
+			count, index = 1, people.Index(k)
+		} else {
+			people = people.Next
+		}
+	}
+
+	return people.Id, nil
+}
+
 func main() {
 	header := &People{Id: 0}
 	header.Insert(1)
 	header.Insert(2)
 	header.Insert(3)
 	header.Insert(4)
-	//header.Insert(5)
+	header.Insert(5)
 
 	//header.Lookup()
-	id, err := header.Josephus(3)
+
+	/*
+		id, err := header.Josephus(3)
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		fmt.Println(id)
+	*/
+
+	id, err := header.Josephus2(3)
 	if err != nil {
 		fmt.Println(err)
 	}
